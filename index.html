@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="imagex/png" href="https://cdn-icons-png.flaticon.com/512/4341/4341087.png">
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Calculadora</h1>
+        <div id="calculator">
+            <input type="text" id="display" class="calculator-display" disabled>
+            <div class="calculator-buttons">
+                <button onclick="appendNumber(7)">7</button>
+                <button onclick="appendNumber(8)">8</button>
+                <button onclick="appendNumber(9)">9</button>
+                <button class="operation" onclick="chooseOperation('divide')">÷</button>
+                <button onclick="appendNumber(4)">4</button>
+                <button onclick="appendNumber(5)">5</button>
+                <button onclick="appendNumber(6)">6</button>
+                <button class="operation" onclick="chooseOperation('multiply')">×</button>
+                <button onclick="appendNumber(1)">1</button>
+                <button onclick="appendNumber(2)">2</button>
+                <button onclick="appendNumber(3)">3</button>
+                <button class="operation" onclick="chooseOperation('subtract')">−</button>
+                <button onclick="appendNumber(0)">0</button>
+                <button onclick="clearDisplay()">C</button>
+                <button class="equals" onclick="calculate()">=</button>
+                <button class="operation" onclick="chooseOperation('add')">+</button>
+            </div>
+        </div>
+        <h2>Resultado: <span id="result"></span></h2>
+    </div>
+    
+    <script>
+        let currentInput = '';
+        let firstOperand = null;
+        let currentOperation = null;
+
+        function appendNumber(number) {
+            currentInput += number;
+            updateDisplay(currentInput);
+        }
+
+        function chooseOperation(operation) {
+            if (currentInput === '') return;
+            if (firstOperand !== null) {
+                calculate();
+            }
+            firstOperand = parseFloat(currentInput);
+            currentOperation = operation;
+            currentInput = '';
+        }
+
+        function calculate() {
+            if (currentInput === '' || firstOperand === null) return;
+            const secondOperand = parseFloat(currentInput);
+            let result;
+            switch (currentOperation) {
+                case 'add':
+                    result = firstOperand + secondOperand;
+                    break;
+                case 'subtract':
+                    result = firstOperand - secondOperand;
+                    break;
+                case 'multiply':
+                    result = firstOperand * secondOperand;
+                    break;
+                case 'divide':
+                    result = firstOperand / secondOperand;
+                    break;
+                default:
+                    return;
+            }
+            updateDisplay(result);
+            firstOperand = null;
+            currentOperation = null;
+            currentInput = result.toString();
+            document.getElementById('result').textContent = result;
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            firstOperand = null;
+            currentOperation = null;
+            updateDisplay('');
+            document.getElementById('result').textContent = '';
+        }
+
+        function updateDisplay(value) {
+            document.getElementById('display').value = value;
+        }
+    </script>
+</body>
+</html>
